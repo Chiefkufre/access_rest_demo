@@ -1,0 +1,2789 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Rest — Premium Apartment Stays in Nigeria</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        indigo: { 950: '#1a0a4a' },
+                        brand: {
+                            50: '#f0f1ff', 100: '#e4e5ff', 200: '#cdcfff',
+                            300: '#a8acff', 400: '#817eff', 500: '#5b52f8',
+                            600: '#4230ef', 600: '#3b1fd4', 700: '#2f18b0',
+                            800: '#261692', 900: '#1e1278', 950: '#130b4e',
+                        },
+                        gold: { 400: '#f5a623', 500: '#e8940e', 600: '#c97c0a' },
+                        surface: '#F8F9FC',
+                    },
+                    fontFamily: {
+                        display: ['Syne', 'sans-serif'],
+                        body: ['DM Sans', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 2px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)',
+                        'card-hover': '0 12px 40px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06)',
+                        'float': '0 20px 60px rgba(0,0,0,0.15)',
+                        'navbar': '0 1px 0 rgba(0,0,0,0.08)',
+                    },
+                    borderRadius: { '2xl': '1rem', '3xl': '1.5rem', '4xl': '2rem' },
+                    animation: {
+                        'fade-up': 'fadeUp 0.6s ease forwards',
+                        'fade-in': 'fadeIn 0.4s ease forwards',
+                        'slide-down': 'slideDown 0.3s ease forwards',
+                    },
+                    keyframes: {
+                        fadeUp: { '0%': { opacity: 0, transform: 'translateY(24px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+                        fadeIn: { '0%': { opacity: 0 }, '100%': { opacity: 1 } },
+                        slideDown: { '0%': { opacity: 0, transform: 'translateY(-8px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #F8F9FC;
+            color: #111827;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Page system */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Navbar */
+        #navbar {
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #navbar.scrolled {
+            background: rgba(255, 255, 255, 0.97) !important;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        #navbar.scrolled .nav-logo {
+            color: #1e1278 !important;
+        }
+
+        #navbar.scrolled .nav-link {
+            color: #374151 !important;
+        }
+
+        #navbar.scrolled .nav-cta {
+            background: #3b1fd4 !important;
+        }
+
+        #navbar.dark {
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        #navbar.dark .nav-logo {
+            color: #1e1278;
+        }
+
+        #navbar.dark .nav-link {
+            color: #374151;
+        }
+
+        /* Cards */
+        .apt-card {
+            transition: transform 0.3s cubic-bezier(.34, 1.56, .64, 1), box-shadow 0.3s ease;
+        }
+
+        .apt-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.13);
+        }
+
+        .apt-card:hover .card-img {
+            transform: scale(1.04);
+        }
+
+        .card-img {
+            transition: transform 0.5s ease;
+        }
+
+        .card-img-wrap {
+            overflow: hidden;
+            border-radius: 12px 12px 0 0;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, #3b1fd4, #5b52f8);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(59, 31, 212, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(59, 31, 212, 0.45);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            border: 1.5px solid #e5e7eb;
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: #3b1fd4;
+            color: #3b1fd4;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #f5a623, #e8940e);
+            box-shadow: 0 4px 14px rgba(232, 148, 14, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(232, 148, 14, 0.45);
+        }
+
+        /* Search bar */
+        .search-bar {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-input:focus {
+            outline: none;
+        }
+
+        /* Hero */
+        .hero-overlay {
+            background: linear-gradient(160deg, rgba(19, 11, 78, 0.75) 0%, rgba(30, 18, 120, 0.45) 50%, rgba(0, 0, 0, 0.2) 100%);
+        }
+
+        /* Amenity icon */
+        .amenity-tag {
+            background: #f0f1ff;
+            color: #3b1fd4;
+            transition: background 0.2s;
+        }
+
+        .amenity-tag:hover {
+            background: #e4e5ff;
+        }
+
+        /* Gallery */
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .gallery-item img {
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.06);
+        }
+
+        /* Booking sidebar */
+        .booking-sidebar {
+            position: sticky;
+            top: 88px;
+        }
+
+        /* Status badges */
+        .badge-confirmed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Progress steps */
+        .step-line {
+            background: #e5e7eb;
+        }
+
+        .step-line.active {
+            background: #3b1fd4;
+        }
+
+        /* Sidebar nav */
+        .sidebar-link {
+            transition: all 0.15s ease;
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background: #f0f1ff;
+            color: #3b1fd4;
+        }
+
+        .sidebar-link.active {
+            font-weight: 600;
+        }
+
+        /* Table */
+        .data-table tr {
+            transition: background 0.15s;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f9faff;
+        }
+
+        /* Scroll animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Input focus */
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #5b52f8 !important;
+            box-shadow: 0 0 0 3px rgba(91, 82, 248, 0.12);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 99px;
+        }
+
+        /* Filter sidebar */
+        .filter-sidebar {
+            position: sticky;
+            top: 88px;
+            height: calc(100vh - 100px);
+            overflow-y: auto;
+        }
+
+        .range-slider {
+            accent-color: #3b1fd4;
+        }
+
+        /* Star rating */
+        .star {
+            color: #f5a623;
+        }
+
+        /* Carousel dots */
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 99px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .dot.active {
+            width: 24px;
+            background: white;
+        }
+
+        /* Testimonial */
+        .testimonial-card {
+            background: white;
+            border-radius: 20px;
+        }
+
+        /* Feature icon */
+        .feature-icon-wrap {
+            background: linear-gradient(135deg, #f0f1ff, #e4e5ff);
+            border-radius: 16px;
+        }
+
+        /* Number stat */
+        .stat-number {
+            font-feature-settings: 'tnum';
+        }
+
+        /* Section fade */
+        @keyframes sectionFade {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .page.active>* {
+            animation: sectionFade 0.35s ease forwards;
+        }
+
+        /* Floating label */
+        .price-badge {
+            background: rgba(19, 11, 78, 0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Mobile nav */
+        @media (max-width: 768px) {
+            .mobile-nav {
+                display: none;
+            }
+
+            .mobile-nav.open {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ═══════════════════════════════════════════
+     NAVBAR (Global)
+═══════════════════════════════════════════ -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+        style="background: transparent;">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <!-- Logo -->
+            <button onclick="showPage('home')"
+                class="nav-logo font-display font-800 text-xl text-white tracking-tight flex items-center gap-2">
+                <span
+                    style="background: linear-gradient(135deg,#5b52f8,#f5a623); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-size:1.4rem;">✦</span>
+                <span class="text-white" style="font-weight:800; letter-spacing:-0.02em;">Access<span
+                        style="color:#f5a623">Rest</span></span>
+            </button>
+
+            <!-- Nav Links -->
+            <div class="hidden md:flex items-center gap-8">
+                <button onclick="showPage('listings')"
+                    class="nav-link text-white/85 hover:text-white text-sm font-medium transition-colors">Apartments</button>
+                <button onclick="showPage('dashboard')"
+                    class="nav-link text-white/85 hover:text-white text-sm font-medium transition-colors">My
+                    Bookings</button>
+                <button onclick="showPage('admin')"
+                    class="nav-link text-white/85 hover:text-white text-sm font-medium transition-colors">Admin</button>
+                <a href="#" class="nav-link text-white/85 hover:text-white text-sm font-medium transition-colors">List
+                    Property</a>
+            </div>
+
+            <!-- CTA -->
+            <div class="flex items-center gap-3">
+                <button
+                    class="nav-link hidden md:block text-white/85 hover:text-white text-sm font-medium transition-colors">Sign
+                    In</button>
+                <button class="nav-cta btn-primary text-white text-sm font-medium px-5 py-2.5 rounded-xl">Get
+                    Started</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ═══════════════════════════════════════════
+     PAGE: HOME (Landing)
+═══════════════════════════════════════════ -->
+    <div id="page-home" class="page active">
+
+        <!-- HERO -->
+        <section class="relative min-h-screen flex flex-col">
+            <!-- Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1800&q=80"
+                    alt="Luxury apartment" class="w-full h-full object-cover">
+                <div class="hero-overlay absolute inset-0"></div>
+            </div>
+
+            <!-- Hero Content -->
+            <div class="relative z-10 flex-1 flex flex-col justify-center max-w-7xl mx-auto px-6 pt-24 pb-12">
+                <div class="max-w-2xl">
+                    <div
+                        class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-1.5 mb-6">
+                        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        <span class="text-white/90 text-sm font-medium">200+ Premium Apartments Available</span>
+                    </div>
+                    <h1 class="font-display text-5xl md:text-7xl font-800 text-white leading-tight mb-6"
+                        style="font-weight:800; letter-spacing:-0.03em;">
+                        Find Your<br><span style="color:#f5a623;">Perfect</span><br>Rest.
+                    </h1>
+                    <p class="text-white/75 text-lg md:text-xl font-light leading-relaxed mb-8 max-w-lg">
+                        Premium short-stay apartments in Lagos, Abuja & Port Harcourt. Curated for comfort, booked in
+                        seconds.
+                    </p>
+                    <div class="flex items-center gap-6">
+                        <div class="flex -space-x-2">
+                            <img src="https://i.pravatar.cc/36?img=1"
+                                class="w-9 h-9 rounded-full border-2 border-white object-cover" alt="">
+                            <img src="https://i.pravatar.cc/36?img=2"
+                                class="w-9 h-9 rounded-full border-2 border-white object-cover" alt="">
+                            <img src="https://i.pravatar.cc/36?img=3"
+                                class="w-9 h-9 rounded-full border-2 border-white object-cover" alt="">
+                            <img src="https://i.pravatar.cc/36?img=4"
+                                class="w-9 h-9 rounded-full border-2 border-white object-cover" alt="">
+                        </div>
+                        <div>
+                            <div class="flex gap-0.5 mb-0.5">
+                                <span class="star text-sm">★★★★★</span>
+                            </div>
+                            <span class="text-white/70 text-xs">4.9 from 3,200+ reviews</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Search Bar -->
+            <div class="relative z-10 max-w-5xl mx-auto w-full px-6 pb-16">
+                <div class="search-bar bg-white rounded-2xl p-2 flex flex-col md:flex-row">
+                    <!-- Location -->
+                    <div class="flex-1 px-4 py-3 border-b md:border-b-0 md:border-r border-gray-100">
+                        <label class="block text-xs font-600 text-gray-500 mb-1 uppercase tracking-wide"
+                            style="font-family:'Syne',sans-serif;">Location</label>
+                        <select
+                            class="search-input w-full text-sm text-gray-800 bg-transparent font-medium border-0 cursor-pointer"
+                            style="font-family:'DM Sans',sans-serif;">
+                            <option>Lagos — Victoria Island</option>
+                            <option>Lagos — Lekki Phase 1</option>
+                            <option>Lagos — Ikoyi</option>
+                            <option>Abuja — Maitama</option>
+                            <option>Abuja — Wuse 2</option>
+                            <option>Port Harcourt — GRA</option>
+                        </select>
+                    </div>
+                    <!-- Check In -->
+                    <div class="flex-1 px-4 py-3 border-b md:border-b-0 md:border-r border-gray-100">
+                        <label class="block text-xs font-600 text-gray-500 mb-1 uppercase tracking-wide"
+                            style="font-family:'Syne',sans-serif;">Check In</label>
+                        <input type="date"
+                            class="search-input w-full text-sm text-gray-800 bg-transparent font-medium border-0"
+                            value="2025-06-01">
+                    </div>
+                    <!-- Check Out -->
+                    <div class="flex-1 px-4 py-3 border-b md:border-b-0 md:border-r border-gray-100">
+                        <label class="block text-xs font-600 text-gray-500 mb-1 uppercase tracking-wide"
+                            style="font-family:'Syne',sans-serif;">Check Out</label>
+                        <input type="date"
+                            class="search-input w-full text-sm text-gray-800 bg-transparent font-medium border-0"
+                            value="2025-06-05">
+                    </div>
+                    <!-- Guests -->
+                    <div class="px-4 py-3 md:border-r border-gray-100">
+                        <label class="block text-xs font-600 text-gray-500 mb-1 uppercase tracking-wide"
+                            style="font-family:'Syne',sans-serif;">Guests</label>
+                        <select
+                            class="search-input w-full text-sm text-gray-800 bg-transparent font-medium border-0 cursor-pointer"
+                            style="font-family:'DM Sans',sans-serif;">
+                            <option>1 Guest</option>
+                            <option>2 Guests</option>
+                            <option>3 Guests</option>
+                            <option>4+ Guests</option>
+                        </select>
+                    </div>
+                    <!-- Search Button -->
+                    <div class="p-2">
+                        <button onclick="showPage('listings')"
+                            class="btn-primary text-white font-display font-600 px-8 py-3.5 rounded-xl w-full md:w-auto whitespace-nowrap flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            Search
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick filters -->
+                <div class="flex gap-2 mt-4 flex-wrap">
+                    <span class="text-white/60 text-xs font-medium mr-1">Popular:</span>
+                    <button
+                        class="bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-xs px-3 py-1.5 rounded-full hover:bg-white/25 transition-colors">🏙️
+                        Victoria Island</button>
+                    <button
+                        class="bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-xs px-3 py-1.5 rounded-full hover:bg-white/25 transition-colors">🏖️
+                        Lekki Phase 1</button>
+                    <button
+                        class="bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-xs px-3 py-1.5 rounded-full hover:bg-white/25 transition-colors">🏛️
+                        Ikoyi</button>
+                    <button
+                        class="bg-white/15 backdrop-blur-sm border border-white/20 text-white/90 text-xs px-3 py-1.5 rounded-full hover:bg-white/25 transition-colors">🌆
+                        Maitama, Abuja</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS BAND -->
+        <section class="bg-white border-b border-gray-100 py-8">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <p class="font-display text-3xl font-800 text-brand-700 stat-number" style="color:#2f18b0;">200+</p>
+                    <p class="text-gray-500 text-sm mt-1">Premium Apartments</p>
+                </div>
+                <div class="text-center">
+                    <p class="font-display text-3xl font-800 stat-number" style="color:#2f18b0;">6</p>
+                    <p class="text-gray-500 text-sm mt-1">Major Cities</p>
+                </div>
+                <div class="text-center">
+                    <p class="font-display text-3xl font-800 stat-number" style="color:#2f18b0;">3.2K+</p>
+                    <p class="text-gray-500 text-sm mt-1">Happy Guests</p>
+                </div>
+                <div class="text-center">
+                    <p class="font-display text-3xl font-800 stat-number" style="color:#2f18b0;">4.9★</p>
+                    <p class="text-gray-500 text-sm mt-1">Average Rating</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED APARTMENTS -->
+        <section class="max-w-7xl mx-auto px-6 py-20">
+            <div class="flex items-end justify-between mb-10">
+                <div>
+                    <p class="text-sm font-600 text-brand-600 uppercase tracking-widest mb-2"
+                        style="color:#3b1fd4; font-family:'Syne',sans-serif;">Hand-Picked</p>
+                    <h2 class="font-display text-4xl font-800" style="letter-spacing:-0.02em;">Featured Apartments</h2>
+                </div>
+                <button onclick="showPage('listings')"
+                    class="btn-secondary text-gray-700 font-medium px-5 py-2.5 rounded-xl text-sm flex items-center gap-2">
+                    View All
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                    onclick="showPage('details')">
+                    <div class="card-img-wrap relative h-52">
+                        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80"
+                            alt="Penthouse" class="card-img w-full h-full object-cover">
+                        <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1.5 rounded-lg"
+                            style="font-family:'Syne',sans-serif;">₦185,000<span
+                                class="font-300 text-white/70">/night</span></div>
+                        <button
+                            class="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                            <svg class="w-4 h-4 text-gray-500 hover:text-red-400 transition-colors" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h3 class="font-display font-700 text-gray-900 text-base leading-tight">The Meridian
+                                    Penthouse</h3>
+                                <p class="text-gray-500 text-sm mt-0.5 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    </svg>
+                                    Victoria Island, Lagos
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-1 text-sm">
+                                <span class="star">★</span>
+                                <span class="font-600 text-gray-900">4.97</span>
+                                <span class="text-gray-400">(128)</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-3 flex-wrap">
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">3 Bed</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Pool</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Gym</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Concierge</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                    onclick="showPage('details')">
+                    <div class="card-img-wrap relative h-52">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=80" alt="Studio"
+                            class="card-img w-full h-full object-cover">
+                        <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1.5 rounded-lg"
+                            style="font-family:'Syne',sans-serif;">₦75,000<span
+                                class="font-300 text-white/70">/night</span></div>
+                        <div class="absolute top-3 left-3 bg-gold-400 text-white text-xs font-700 px-2.5 py-1 rounded-full"
+                            style="background: #f5a623; font-family:'Syne',sans-serif;">BESTSELLER</div>
+                        <button
+                            class="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                            <svg class="w-4 h-4 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h3 class="font-display font-700 text-gray-900 text-base leading-tight">Ikeja City Loft
+                                </h3>
+                                <p class="text-gray-500 text-sm mt-0.5 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    </svg>
+                                    Ikoyi, Lagos
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-1 text-sm">
+                                <span class="star">★</span>
+                                <span class="font-600 text-gray-900">4.91</span>
+                                <span class="text-gray-400">(94)</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-3 flex-wrap">
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">1 Bed</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">WiFi</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Netflix</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                    onclick="showPage('details')">
+                    <div class="card-img-wrap relative h-52">
+                        <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=80" alt="Villa"
+                            class="card-img w-full h-full object-cover">
+                        <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1.5 rounded-lg"
+                            style="font-family:'Syne',sans-serif;">₦250,000<span
+                                class="font-300 text-white/70">/night</span></div>
+                        <div class="absolute top-3 left-3 bg-purple-600 text-white text-xs font-700 px-2.5 py-1 rounded-full"
+                            style="font-family:'Syne',sans-serif;">PREMIUM</div>
+                        <button
+                            class="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                            <svg class="w-4 h-4 text-gray-500 hover:text-red-400 transition-colors" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h3 class="font-display font-700 text-gray-900 text-base leading-tight">Asokoro Villa
+                                    Estate</h3>
+                                <p class="text-gray-500 text-sm mt-0.5 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    </svg>
+                                    Asokoro, Abuja
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-1 text-sm">
+                                <span class="star">★</span>
+                                <span class="font-600 text-gray-900">5.0</span>
+                                <span class="text-gray-400">(47)</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-3 flex-wrap">
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">5 Bed</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Pool</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Chef</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Cinema</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                    onclick="showPage('details')">
+                    <div class="card-img-wrap relative h-52">
+                        <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=600&q=80"
+                            alt="Apartment" class="card-img w-full h-full object-cover">
+                        <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1.5 rounded-lg"
+                            style="font-family:'Syne',sans-serif;">₦95,000<span
+                                class="font-300 text-white/70">/night</span></div>
+                        <button
+                            class="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h3 class="font-display font-700 text-gray-900 text-base leading-tight">Lekki Oceanview
+                                    Suite</h3>
+                                <p class="text-gray-500 text-sm mt-0.5 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    </svg>
+                                    Lekki Phase 1, Lagos
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-1 text-sm">
+                                <span class="star">★</span>
+                                <span class="font-600 text-gray-900">4.88</span>
+                                <span class="text-gray-400">(203)</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-3 flex-wrap">
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">2 Bed</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Ocean View</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Balcony</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                    onclick="showPage('details')">
+                    <div class="card-img-wrap relative h-52">
+                        <img src="https://images.unsplash.com/photo-1556020685-ae41abfc9365?w=600&q=80" alt="Apartment"
+                            class="card-img w-full h-full object-cover">
+                        <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1.5 rounded-lg"
+                            style="font-family:'Syne',sans-serif;">₦120,000<span
+                                class="font-300 text-white/70">/night</span></div>
+                        <button
+                            class="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h3 class="font-display font-700 text-gray-900 text-base leading-tight">Maitama
+                                    Executive Flat</h3>
+                                <p class="text-gray-500 text-sm mt-0.5 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    </svg>
+                                    Maitama, Abuja
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-1 text-sm">
+                                <span class="star">★</span>
+                                <span class="font-600 text-gray-900">4.94</span>
+                                <span class="text-gray-400">(56)</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-3 flex-wrap">
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">2 Bed</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">24/7 Power</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Security</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                    onclick="showPage('details')">
+                    <div class="card-img-wrap relative h-52">
+                        <img src="https://images.unsplash.com/photo-1501183638710-841dd1904471?w=600&q=80" alt="GRA"
+                            class="card-img w-full h-full object-cover">
+                        <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1.5 rounded-lg"
+                            style="font-family:'Syne',sans-serif;">₦68,000<span
+                                class="font-300 text-white/70">/night</span></div>
+                        <button
+                            class="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center hover:bg-white transition-colors">
+                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-2">
+                            <div>
+                                <h3 class="font-display font-700 text-gray-900 text-base leading-tight">GRA Heritage
+                                    Apartment</h3>
+                                <p class="text-gray-500 text-sm mt-0.5 flex items-center gap-1">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    </svg>
+                                    GRA Phase 2, Port Harcourt
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-1 text-sm">
+                                <span class="star">★</span>
+                                <span class="font-600 text-gray-900">4.83</span>
+                                <span class="text-gray-400">(81)</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-3 flex-wrap">
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">2 Bed</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Garden</span>
+                            <span class="amenity-tag text-xs px-2.5 py-1 rounded-lg font-medium">Parking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY CHOOSE US -->
+        <section style="background: linear-gradient(160deg, #f0f1ff 0%, #F8F9FC 100%);" class="py-24">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <p class="text-sm font-600 uppercase tracking-widest mb-3"
+                        style="color:#3b1fd4; font-family:'Syne',sans-serif;">Why Access Rest</p>
+                    <h2 class="font-display text-4xl font-800" style="letter-spacing:-0.02em;">Built for the discerning
+                        traveller</h2>
+                    <p class="text-gray-500 mt-4 max-w-xl mx-auto leading-relaxed">Every apartment is personally
+                        verified. Every booking is protected. Every stay is extraordinary.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-2xl shadow-card reveal">
+                        <div class="feature-icon-wrap w-14 h-14 flex items-center justify-center mb-6">
+                            <svg class="w-7 h-7" style="color:#3b1fd4;" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 class="font-display font-700 text-lg mb-3">Verified Properties</h3>
+                        <p class="text-gray-500 leading-relaxed text-sm">Every listing is physically inspected and
+                            verified by our team. No surprises on arrival.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl shadow-card reveal">
+                        <div class="feature-icon-wrap w-14 h-14 flex items-center justify-center mb-6">
+                            <svg class="w-7 h-7" style="color:#3b1fd4;" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="font-display font-700 text-lg mb-3">Instant Booking</h3>
+                        <p class="text-gray-500 leading-relaxed text-sm">Book in under 2 minutes. Instant confirmation.
+                            No back-and-forth with hosts.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl shadow-card reveal">
+                        <div class="feature-icon-wrap w-14 h-14 flex items-center justify-center mb-6">
+                            <svg class="w-7 h-7" style="color:#3b1fd4;" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                        </div>
+                        <h3 class="font-display font-700 text-lg mb-3">Secure Payments</h3>
+                        <p class="text-gray-500 leading-relaxed text-sm">Bank-grade encryption. Pay with card, bank
+                            transfer, or USSD. Full refund protection.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl shadow-card reveal">
+                        <div class="feature-icon-wrap w-14 h-14 flex items-center justify-center mb-6">
+                            <svg class="w-7 h-7" style="color:#3b1fd4;" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                    d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="font-display font-700 text-lg mb-3">24/7 Support</h3>
+                        <p class="text-gray-500 leading-relaxed text-sm">Our concierge team is always on call. Any
+                            issue, any time — we've got you covered.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl shadow-card reveal">
+                        <div class="feature-icon-wrap w-14 h-14 flex items-center justify-center mb-6">
+                            <svg class="w-7 h-7" style="color:#3b1fd4;" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                        </div>
+                        <h3 class="font-display font-700 text-lg mb-3">Curated Quality</h3>
+                        <p class="text-gray-500 leading-relaxed text-sm">Only the top 15% of listings make it onto
+                            Access Rest. Luxury is our minimum standard.</p>
+                    </div>
+
+                    <div class="bg-white p-8 rounded-2xl shadow-card reveal"
+                        style="background: linear-gradient(135deg, #2f18b0, #5b52f8) !important;">
+                        <h3 class="font-display font-700 text-lg mb-3 text-white">Ready to experience the difference?
+                        </h3>
+                        <p class="text-white/70 leading-relaxed text-sm mb-6">Join 3,200+ guests who've discovered
+                            Nigeria's finest short-stay apartments.</p>
+                        <button onclick="showPage('listings')"
+                            class="bg-white text-brand-700 font-display font-700 px-6 py-3 rounded-xl text-sm hover:bg-gray-50 transition-colors"
+                            style="color:#2f18b0;">Browse Apartments →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="max-w-7xl mx-auto px-6 py-20">
+            <div class="text-center mb-12">
+                <p class="text-sm font-600 uppercase tracking-widest mb-3"
+                    style="color:#3b1fd4; font-family:'Syne',sans-serif;">Testimonials</p>
+                <h2 class="font-display text-4xl font-800" style="letter-spacing:-0.02em;">Guests love us</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="testimonial-card p-7 shadow-card">
+                    <div class="flex gap-0.5 mb-4"><span class="star">★★★★★</span></div>
+                    <p class="text-gray-600 leading-relaxed text-sm mb-5">"The Meridian Penthouse was absolutely
+                        stunning. Woke up to the Lagos skyline every morning. Will absolutely book again for my next
+                        trip."</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://i.pravatar.cc/40?img=5" class="w-10 h-10 rounded-full object-cover" alt="">
+                        <div>
+                            <p class="font-display font-700 text-sm text-gray-900">Chidinma Okafor</p>
+                            <p class="text-gray-400 text-xs">Marketing Director, Lagos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card p-7 shadow-card">
+                    <div class="flex gap-0.5 mb-4"><span class="star">★★★★★</span></div>
+                    <p class="text-gray-600 leading-relaxed text-sm mb-5">"Came to Abuja for a week-long conference. The
+                        Maitama flat had everything I needed. Seamless booking, fast check-in. Access Rest is the real
+                        deal."</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://i.pravatar.cc/40?img=7" class="w-10 h-10 rounded-full object-cover" alt="">
+                        <div>
+                            <p class="font-display font-700 text-sm text-gray-900">Emeka Adeyemi</p>
+                            <p class="text-gray-400 text-xs">Senior Consultant, Abuja</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card p-7 shadow-card">
+                    <div class="flex gap-0.5 mb-4"><span class="star">★★★★★</span></div>
+                    <p class="text-gray-600 leading-relaxed text-sm mb-5">"Moved from London for a project. Stayed at
+                        the GRA Heritage for 3 weeks. Felt like a proper home. Customer support was incredible
+                        throughout."</p>
+                    <div class="flex items-center gap-3">
+                        <img src="https://i.pravatar.cc/40?img=9" class="w-10 h-10 rounded-full object-cover" alt="">
+                        <div>
+                            <p class="font-display font-700 text-sm text-gray-900">Amara Nwosu</p>
+                            <p class="text-gray-400 text-xs">Finance Analyst, Port Harcourt</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer style="background: #130b4e;" class="text-white pt-16 pb-8">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                    <div>
+                        <div class="font-display font-800 text-xl mb-4">
+                            <span style="color:#f5a623;">✦</span> Access<span style="color:#f5a623;">Rest</span>
+                        </div>
+                        <p class="text-white/50 text-sm leading-relaxed">Nigeria's most trusted premium apartment
+                            booking platform. Curated for comfort.</p>
+                        <div class="flex gap-3 mt-5">
+                            <a href="#"
+                                class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors text-xs">𝕏</a>
+                            <a href="#"
+                                class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors text-xs">in</a>
+                            <a href="#"
+                                class="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors text-xs">📸</a>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-display font-700 text-sm mb-4 text-white/80">Platform</h4>
+                        <ul class="space-y-2.5 text-white/50 text-sm">
+                            <li><a href="#" class="hover:text-white transition-colors">Browse Apartments</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">List Your Property</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">How It Works</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-display font-700 text-sm mb-4 text-white/80">Locations</h4>
+                        <ul class="space-y-2.5 text-white/50 text-sm">
+                            <li><a href="#" class="hover:text-white transition-colors">Lagos — VI & Ikoyi</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Lagos — Lekki</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Abuja — Maitama</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Port Harcourt — GRA</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-display font-700 text-sm mb-4 text-white/80">Company</h4>
+                        <ul class="space-y-2.5 text-white/50 text-sm">
+                            <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Press</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p class="text-white/35 text-xs">© 2025 Access Rest Ltd. All rights reserved. RC: 1823492</p>
+                    <div class="flex gap-6 text-white/35 text-xs">
+                        <a href="#" class="hover:text-white/60 transition-colors">Privacy Policy</a>
+                        <a href="#" class="hover:text-white/60 transition-colors">Terms of Service</a>
+                        <a href="#" class="hover:text-white/60 transition-colors">Cookie Policy</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     PAGE: LISTINGS
+═══════════════════════════════════════════ -->
+    <div id="page-listings" class="page">
+        <div class="pt-16 min-h-screen bg-surface">
+            <!-- Listings Header -->
+            <div style="background: linear-gradient(135deg, #1e1278 0%, #3b1fd4 100%);" class="px-6 py-12">
+                <div class="max-w-7xl mx-auto">
+                    <h1 class="font-display text-3xl font-800 text-white mb-2">Premium Apartments</h1>
+                    <p class="text-white/60 text-sm">Showing 24 apartments · Lagos, Abuja & Port Harcourt</p>
+                    <!-- Mini search bar -->
+                    <div
+                        class="mt-6 bg-white/10 backdrop-blur border border-white/20 rounded-xl p-3 flex flex-wrap gap-3">
+                        <select
+                            class="bg-transparent text-white text-sm px-3 py-1.5 rounded-lg border border-white/20 flex-1 min-w-32 focus:outline-none focus:border-white/50">
+                            <option>All Locations</option>
+                            <option>Lagos — VI</option>
+                            <option>Lagos — Lekki</option>
+                            <option>Abuja</option>
+                            <option>Port Harcourt</option>
+                        </select>
+                        <input type="date" value="2025-06-01"
+                            class="bg-transparent text-white text-sm px-3 py-1.5 rounded-lg border border-white/20 focus:outline-none focus:border-white/50"
+                            style="color-scheme: dark;">
+                        <input type="date" value="2025-06-05"
+                            class="bg-transparent text-white text-sm px-3 py-1.5 rounded-lg border border-white/20 focus:outline-none focus:border-white/50"
+                            style="color-scheme: dark;">
+                        <button class="btn-gold text-white text-sm font-600 px-5 py-1.5 rounded-lg"
+                            style="font-family:'Syne',sans-serif;">Update Search</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 py-8 flex gap-8">
+                <!-- Filter Sidebar -->
+                <div class="w-72 flex-shrink-0 hidden lg:block">
+                    <div class="filter-sidebar">
+                        <div class="bg-white rounded-2xl p-6 shadow-card">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="font-display font-700 text-base">Filters</h3>
+                                <button class="text-brand-600 text-xs font-600 hover:underline"
+                                    style="color:#3b1fd4;">Clear all</button>
+                            </div>
+
+                            <!-- Price Range -->
+                            <div class="mb-6 pb-6 border-b border-gray-100">
+                                <h4 class="font-display font-600 text-sm mb-4">Price per night</h4>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span>₦20,000</span>
+                                    <span class="font-600 text-brand-700" style="color:#2f18b0;">₦300,000</span>
+                                </div>
+                                <input type="range" min="20000" max="500000" value="300000" class="w-full range-slider"
+                                    oninput="updatePriceFilter(this.value)">
+                            </div>
+
+                            <!-- Bedrooms -->
+                            <div class="mb-6 pb-6 border-b border-gray-100">
+                                <h4 class="font-display font-600 text-sm mb-4">Bedrooms</h4>
+                                <div class="flex gap-2">
+                                    <button
+                                        class="filter-btn text-xs px-3 py-1.5 rounded-lg border border-brand-600 bg-brand-50 text-brand-700 font-600"
+                                        style="background:#f0f1ff; color:#2f18b0; border-color:#3b1fd4;">Any</button>
+                                    <button
+                                        class="filter-btn text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:border-brand-600 transition-colors"
+                                        onclick="setActiveFilter(this)">1</button>
+                                    <button
+                                        class="filter-btn text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:border-brand-600 transition-colors"
+                                        onclick="setActiveFilter(this)">2</button>
+                                    <button
+                                        class="filter-btn text-xs px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:border-brand-600 transition-colors"
+                                        onclick="setActiveFilter(this)">3+</button>
+                                </div>
+                            </div>
+
+                            <!-- Amenities -->
+                            <div class="mb-6 pb-6 border-b border-gray-100">
+                                <h4 class="font-display font-600 text-sm mb-4">Amenities</h4>
+                                <div class="space-y-3">
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="checkbox" checked class="rounded" style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">Swimming Pool</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="checkbox" class="rounded" style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">Gym / Fitness</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="checkbox" class="rounded" style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">24/7 Power Supply</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="checkbox" class="rounded" style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">High-Speed WiFi</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="checkbox" class="rounded" style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">Concierge Service</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="checkbox" class="rounded" style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">Parking</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Property Type -->
+                            <div class="mb-6">
+                                <h4 class="font-display font-600 text-sm mb-4">Property Type</h4>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="radio" name="type" checked style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">All Types</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="radio" name="type" style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">Apartment</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="radio" name="type" style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">Penthouse</span>
+                                    </label>
+                                    <label class="flex items-center gap-3 cursor-pointer">
+                                        <input type="radio" name="type" style="accent-color:#3b1fd4;">
+                                        <span class="text-sm text-gray-600">Villa</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button
+                                class="btn-primary text-white font-display font-600 w-full py-3 rounded-xl text-sm">Apply
+                                Filters</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Grid -->
+                <div class="flex-1">
+                    <!-- Sort -->
+                    <div class="flex items-center justify-between mb-6">
+                        <p class="text-sm text-gray-500"><span class="font-600 text-gray-900">24 apartments</span> found
+                        </p>
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm text-gray-500">Sort by:</span>
+                            <select
+                                class="text-sm border border-gray-200 rounded-xl px-3 py-2 bg-white text-gray-700 focus:outline-none focus:border-brand-500">
+                                <option>Recommended</option>
+                                <option>Price: Low to High</option>
+                                <option>Price: High to Low</option>
+                                <option>Highest Rated</option>
+                                <option>Most Recent</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                        <!-- Listing cards (8 of them) -->
+                        <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                            onclick="showPage('details')">
+                            <div class="card-img-wrap relative h-48">
+                                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=500&q=80"
+                                    alt="" class="card-img w-full h-full object-cover">
+                                <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1 rounded-lg"
+                                    style="font-family:'Syne',sans-serif;">₦185K<span
+                                        class="text-white/70 text-xs">/night</span></div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-display font-700 text-sm">The Meridian Penthouse</h3>
+                                        <p class="text-gray-400 text-xs mt-0.5">Victoria Island, Lagos</p>
+                                    </div>
+                                    <div class="text-xs flex items-center gap-0.5"><span
+                                            class="star text-xs">★</span><span class="font-600">4.97</span></div>
+                                </div>
+                                <div class="flex gap-1.5 mt-2.5 flex-wrap">
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">3 Bed</span>
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">Pool</span>
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">Gym</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                            onclick="showPage('details')">
+                            <div class="card-img-wrap relative h-48">
+                                <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&q=80" alt=""
+                                    class="card-img w-full h-full object-cover">
+                                <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1 rounded-lg"
+                                    style="font-family:'Syne',sans-serif;">₦75K<span
+                                        class="text-white/70 text-xs">/night</span></div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-display font-700 text-sm">Ikeja City Loft</h3>
+                                        <p class="text-gray-400 text-xs mt-0.5">Ikoyi, Lagos</p>
+                                    </div>
+                                    <div class="text-xs flex items-center gap-0.5"><span
+                                            class="star text-xs">★</span><span class="font-600">4.91</span></div>
+                                </div>
+                                <div class="flex gap-1.5 mt-2.5 flex-wrap">
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">1 Bed</span>
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">WiFi</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                            onclick="showPage('details')">
+                            <div class="card-img-wrap relative h-48">
+                                <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=500&q=80"
+                                    alt="" class="card-img w-full h-full object-cover">
+                                <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1 rounded-lg"
+                                    style="font-family:'Syne',sans-serif;">₦250K<span
+                                        class="text-white/70 text-xs">/night</span></div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-display font-700 text-sm">Asokoro Villa Estate</h3>
+                                        <p class="text-gray-400 text-xs mt-0.5">Asokoro, Abuja</p>
+                                    </div>
+                                    <div class="text-xs flex items-center gap-0.5"><span
+                                            class="star text-xs">★</span><span class="font-600">5.0</span></div>
+                                </div>
+                                <div class="flex gap-1.5 mt-2.5 flex-wrap">
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">5 Bed</span>
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">Pool</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                            onclick="showPage('details')">
+                            <div class="card-img-wrap relative h-48">
+                                <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=500&q=80"
+                                    alt="" class="card-img w-full h-full object-cover">
+                                <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1 rounded-lg"
+                                    style="font-family:'Syne',sans-serif;">₦95K<span
+                                        class="text-white/70 text-xs">/night</span></div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-display font-700 text-sm">Lekki Oceanview Suite</h3>
+                                        <p class="text-gray-400 text-xs mt-0.5">Lekki Phase 1, Lagos</p>
+                                    </div>
+                                    <div class="text-xs flex items-center gap-0.5"><span
+                                            class="star text-xs">★</span><span class="font-600">4.88</span></div>
+                                </div>
+                                <div class="flex gap-1.5 mt-2.5 flex-wrap">
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">2 Bed</span>
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">Ocean View</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                            onclick="showPage('details')">
+                            <div class="card-img-wrap relative h-48">
+                                <img src="https://images.unsplash.com/photo-1556020685-ae41abfc9365?w=500&q=80" alt=""
+                                    class="card-img w-full h-full object-cover">
+                                <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1 rounded-lg"
+                                    style="font-family:'Syne',sans-serif;">₦120K<span
+                                        class="text-white/70 text-xs">/night</span></div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-display font-700 text-sm">Maitama Executive Flat</h3>
+                                        <p class="text-gray-400 text-xs mt-0.5">Maitama, Abuja</p>
+                                    </div>
+                                    <div class="text-xs flex items-center gap-0.5"><span
+                                            class="star text-xs">★</span><span class="font-600">4.94</span></div>
+                                </div>
+                                <div class="flex gap-1.5 mt-2.5 flex-wrap">
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">2 Bed</span>
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">24/7 Power</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                            onclick="showPage('details')">
+                            <div class="card-img-wrap relative h-48">
+                                <img src="https://images.unsplash.com/photo-1501183638710-841dd1904471?w=500&q=80"
+                                    alt="" class="card-img w-full h-full object-cover">
+                                <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1 rounded-lg"
+                                    style="font-family:'Syne',sans-serif;">₦68K<span
+                                        class="text-white/70 text-xs">/night</span></div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-display font-700 text-sm">GRA Heritage Apartment</h3>
+                                        <p class="text-gray-400 text-xs mt-0.5">GRA Phase 2, Port Harcourt</p>
+                                    </div>
+                                    <div class="text-xs flex items-center gap-0.5"><span
+                                            class="star text-xs">★</span><span class="font-600">4.83</span></div>
+                                </div>
+                                <div class="flex gap-1.5 mt-2.5 flex-wrap">
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">2 Bed</span>
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">Garden</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                            onclick="showPage('details')">
+                            <div class="card-img-wrap relative h-48">
+                                <img src="https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?w=500&q=80"
+                                    alt="" class="card-img w-full h-full object-cover">
+                                <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1 rounded-lg"
+                                    style="font-family:'Syne',sans-serif;">₦155K<span
+                                        class="text-white/70 text-xs">/night</span></div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-display font-700 text-sm">Banana Island Retreat</h3>
+                                        <p class="text-gray-400 text-xs mt-0.5">Banana Island, Lagos</p>
+                                    </div>
+                                    <div class="text-xs flex items-center gap-0.5"><span
+                                            class="star text-xs">★</span><span class="font-600">4.99</span></div>
+                                </div>
+                                <div class="flex gap-1.5 mt-2.5 flex-wrap">
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">4 Bed</span>
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">Waterfront</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="apt-card bg-white rounded-2xl overflow-hidden shadow-card cursor-pointer"
+                            onclick="showPage('details')">
+                            <div class="card-img-wrap relative h-48">
+                                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=500&q=80"
+                                    alt="" class="card-img w-full h-full object-cover">
+                                <div class="price-badge absolute bottom-3 left-3 text-white text-sm font-600 px-3 py-1 rounded-lg"
+                                    style="font-family:'Syne',sans-serif;">₦89K<span
+                                        class="text-white/70 text-xs">/night</span></div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-display font-700 text-sm">Wuse 2 Skyline Apt</h3>
+                                        <p class="text-gray-400 text-xs mt-0.5">Wuse 2, Abuja</p>
+                                    </div>
+                                    <div class="text-xs flex items-center gap-0.5"><span
+                                            class="star text-xs">★</span><span class="font-600">4.86</span></div>
+                                </div>
+                                <div class="flex gap-1.5 mt-2.5 flex-wrap">
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">3 Bed</span>
+                                    <span class="amenity-tag text-xs px-2 py-0.5 rounded-md">Balcony</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="flex items-center justify-center gap-2 mt-10">
+                        <button
+                            class="w-9 h-9 rounded-xl border border-gray-200 bg-white text-gray-500 text-sm hover:border-brand-500 transition-colors">←</button>
+                        <button class="w-9 h-9 rounded-xl border-2 text-white text-sm font-700"
+                            style="background:#3b1fd4; border-color:#3b1fd4;">1</button>
+                        <button
+                            class="w-9 h-9 rounded-xl border border-gray-200 bg-white text-gray-600 text-sm hover:border-brand-500 transition-colors">2</button>
+                        <button
+                            class="w-9 h-9 rounded-xl border border-gray-200 bg-white text-gray-600 text-sm hover:border-brand-500 transition-colors">3</button>
+                        <span class="text-gray-400 text-sm">...</span>
+                        <button
+                            class="w-9 h-9 rounded-xl border border-gray-200 bg-white text-gray-600 text-sm hover:border-brand-500 transition-colors">12</button>
+                        <button
+                            class="w-9 h-9 rounded-xl border border-gray-200 bg-white text-gray-500 text-sm hover:border-brand-500 transition-colors">→</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     PAGE: APARTMENT DETAILS
+═══════════════════════════════════════════ -->
+    <div id="page-details" class="page">
+        <div class="pt-16 min-h-screen bg-surface">
+            <!-- Breadcrumb -->
+            <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-2 text-sm text-gray-500">
+                <button onclick="showPage('home')" class="hover:text-brand-600 transition-colors">Home</button>
+                <span>/</span>
+                <button onclick="showPage('listings')"
+                    class="hover:text-brand-600 transition-colors">Apartments</button>
+                <span>/</span>
+                <span class="text-gray-900 font-medium">The Meridian Penthouse</span>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-6 pb-16">
+                <!-- Title Row -->
+                <div class="flex items-start justify-between mb-6">
+                    <div>
+                        <h1 class="font-display text-3xl font-800" style="letter-spacing:-0.02em;">The Meridian
+                            Penthouse</h1>
+                        <div class="flex items-center gap-4 mt-2 text-sm">
+                            <span class="flex items-center gap-1"><span class="star">★</span><span
+                                    class="font-600">4.97</span><span class="text-gray-400"> (128 reviews)</span></span>
+                            <span class="text-gray-300">·</span>
+                            <span class="flex items-center gap-1 text-gray-500">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                </svg>
+                                Victoria Island, Lagos
+                            </span>
+                            <span class="text-gray-300">·</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-600"
+                                style="background:#f0f1ff; color:#3b1fd4;">Superhost</span>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex items-center gap-3">
+                        <button class="btn-secondary px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                            </svg>
+                            Share
+                        </button>
+                        <button class="btn-secondary px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            Save
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Image Gallery -->
+                <div class="grid grid-cols-4 grid-rows-2 gap-2 h-96 mb-8 rounded-2xl overflow-hidden">
+                    <div class="gallery-item col-span-2 row-span-2">
+                        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80" alt=""
+                            class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400&q=80" alt="">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1556020685-ae41abfc9365?w=400&q=80" alt="">
+                    </div>
+                    <div class="gallery-item relative">
+                        <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=400&q=80" alt="">
+                    </div>
+                    <div class="gallery-item relative">
+                        <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=400&q=80" alt="">
+                        <div
+                            class="absolute inset-0 bg-black/40 flex items-center justify-center cursor-pointer hover:bg-black/50 transition-colors">
+                            <span class="text-white font-display font-700 text-sm">+18 photos</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2 Column Layout -->
+                <div class="flex gap-10">
+                    <!-- Left: Details -->
+                    <div class="flex-1 min-w-0">
+                        <!-- Quick Info -->
+                        <div class="flex gap-6 pb-6 border-b border-gray-100 mb-6">
+                            <div class="text-center">
+                                <p class="font-display font-700 text-2xl" style="color:#2f18b0;">3</p>
+                                <p class="text-gray-500 text-xs">Bedrooms</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-display font-700 text-2xl" style="color:#2f18b0;">2</p>
+                                <p class="text-gray-500 text-xs">Bathrooms</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-display font-700 text-2xl" style="color:#2f18b0;">6</p>
+                                <p class="text-gray-500 text-xs">Max Guests</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="font-display font-700 text-2xl" style="color:#2f18b0;">24F</p>
+                                <p class="text-gray-500 text-xs">Floor</p>
+                            </div>
+                        </div>
+
+                        <!-- Host -->
+                        <div class="flex items-center gap-4 pb-6 border-b border-gray-100 mb-6">
+                            <img src="https://i.pravatar.cc/56?img=12" class="w-14 h-14 rounded-full object-cover"
+                                alt="">
+                            <div>
+                                <p class="font-display font-700">Hosted by Adaeze Ibe</p>
+                                <p class="text-gray-400 text-sm">Superhost · Member since 2021 · 312 reviews</p>
+                            </div>
+                            <button class="ml-auto btn-secondary px-4 py-2 rounded-xl text-sm">Contact Host</button>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-8 pb-6 border-b border-gray-100">
+                            <h2 class="font-display font-700 text-lg mb-4">About this place</h2>
+                            <p class="text-gray-600 leading-relaxed text-sm">
+                                Experience the pinnacle of luxury living at The Meridian Penthouse — a stunning
+                                3-bedroom residence perched on the 24th floor of the iconic Meridian Tower on Victoria
+                                Island. Wake up to breathtaking panoramic views of the Lagos lagoon and Atlantic Ocean,
+                                with uninterrupted sunsets that paint the sky in gold and crimson.
+                            </p>
+                            <p class="text-gray-600 leading-relaxed text-sm mt-4">
+                                The apartment features floor-to-ceiling glass walls, Italian marble finishes, Bosch
+                                kitchen appliances, and a private rooftop terrace. Guests enjoy exclusive access to the
+                                tower's infinity pool, world-class gym, and 24/7 concierge service.
+                            </p>
+                            <button class="text-brand-700 text-sm font-600 mt-3 hover:underline"
+                                style="color:#2f18b0;">Show more →</button>
+                        </div>
+
+                        <!-- Amenities -->
+                        <div class="mb-8 pb-6 border-b border-gray-100">
+                            <h2 class="font-display font-700 text-lg mb-5">What this place offers</h2>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="flex items-center gap-3 text-sm text-gray-700">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                                    </svg>
+                                    High-Speed WiFi (500Mbps)
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-gray-700">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                                    </svg>
+                                    Infinity Pool
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-gray-700">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+                                    </svg>
+                                    24/7 Power (Generator + Solar)
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-gray-700">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                    </svg>
+                                    Concierge & Butler Service
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-gray-700">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+                                    </svg>
+                                    World-Class Gym
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-gray-700">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                    Smart TV + Netflix + DSTV
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-gray-700">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                    </svg>
+                                    Secure Underground Parking (x2)
+                                </div>
+                                <div class="flex items-center gap-3 text-sm text-gray-700">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                    Private Rooftop Terrace
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Reviews -->
+                        <div>
+                            <div class="flex items-center gap-3 mb-6">
+                                <h2 class="font-display font-700 text-lg">Reviews</h2>
+                                <span class="flex items-center gap-1 text-sm"><span class="star">★</span><span
+                                        class="font-700">4.97</span></span>
+                                <span class="text-gray-400 text-sm">· 128 reviews</span>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <img src="https://i.pravatar.cc/36?img=15"
+                                            class="w-9 h-9 rounded-full object-cover" alt="">
+                                        <div>
+                                            <p class="font-display font-700 text-sm">Biodun Afolabi</p>
+                                            <p class="text-gray-400 text-xs">April 2025</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 text-sm leading-relaxed">"Absolute perfection. The view at
+                                        night is something else entirely. The concierge team arranged airport pickup,
+                                        restaurant reservations — everything was seamless."</p>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <img src="https://i.pravatar.cc/36?img=22"
+                                            class="w-9 h-9 rounded-full object-cover" alt="">
+                                        <div>
+                                            <p class="font-display font-700 text-sm">Ngozi Okonkwo</p>
+                                            <p class="text-gray-400 text-xs">March 2025</p>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 text-sm leading-relaxed">"Stayed for our anniversary
+                                        weekend. The rooftop terrace is magical at sunset. Adaeze left a welcome bottle
+                                        of champagne — such a thoughtful touch."</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Booking Sidebar -->
+                    <div class="w-96 flex-shrink-0 hidden lg:block">
+                        <div class="booking-sidebar">
+                            <div class="bg-white rounded-2xl shadow-float p-6">
+                                <div class="flex items-baseline justify-between mb-6">
+                                    <div>
+                                        <span class="font-display font-800 text-2xl"
+                                            style="color:#130b4e;">₦185,000</span>
+                                        <span class="text-gray-400 text-sm">/night</span>
+                                    </div>
+                                    <div class="flex items-center gap-1 text-sm">
+                                        <span class="star">★</span>
+                                        <span class="font-600">4.97</span>
+                                        <span class="text-gray-400">(128)</span>
+                                    </div>
+                                </div>
+
+                                <!-- Dates -->
+                                <div class="border border-gray-200 rounded-xl overflow-hidden mb-3">
+                                    <div class="grid grid-cols-2 divide-x divide-gray-200">
+                                        <div class="p-3">
+                                            <label
+                                                class="block text-xs font-700 text-gray-500 uppercase tracking-wide mb-1"
+                                                style="font-family:'Syne',sans-serif;">Check-in</label>
+                                            <input type="date" value="2025-06-01"
+                                                class="w-full text-sm text-gray-800 font-medium border-0 focus:outline-none bg-transparent">
+                                        </div>
+                                        <div class="p-3">
+                                            <label
+                                                class="block text-xs font-700 text-gray-500 uppercase tracking-wide mb-1"
+                                                style="font-family:'Syne',sans-serif;">Check-out</label>
+                                            <input type="date" value="2025-06-05"
+                                                class="w-full text-sm text-gray-800 font-medium border-0 focus:outline-none bg-transparent">
+                                        </div>
+                                    </div>
+                                    <div class="border-t border-gray-200 p-3">
+                                        <label class="block text-xs font-700 text-gray-500 uppercase tracking-wide mb-1"
+                                            style="font-family:'Syne',sans-serif;">Guests</label>
+                                        <select
+                                            class="w-full text-sm text-gray-800 font-medium border-0 bg-transparent focus:outline-none cursor-pointer">
+                                            <option>1 Guest</option>
+                                            <option selected>2 Guests</option>
+                                            <option>3 Guests</option>
+                                            <option>4 Guests</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <button onclick="showPage('booking')"
+                                    class="btn-primary w-full text-white font-display font-700 py-4 rounded-xl text-base mb-4">Reserve
+                                    Now</button>
+                                <p class="text-gray-400 text-xs text-center mb-5">You won't be charged yet</p>
+
+                                <!-- Price breakdown -->
+                                <div class="space-y-3 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">₦185,000 × 4 nights</span>
+                                        <span class="text-gray-800 font-medium">₦740,000</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Service fee</span>
+                                        <span class="text-gray-800 font-medium">₦74,000</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-600">Cleaning fee</span>
+                                        <span class="text-gray-800 font-medium">₦25,000</span>
+                                    </div>
+                                    <div class="border-t border-gray-100 pt-3 flex justify-between">
+                                        <span class="font-display font-700 text-gray-900">Total</span>
+                                        <span class="font-display font-700 text-gray-900">₦839,000</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Trust badges -->
+                            <div class="mt-4 flex items-center justify-center gap-6 text-xs text-gray-400">
+                                <span class="flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    Verified
+                                </span>
+                                <span class="flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                    Secure Payment
+                                </span>
+                                <span class="flex items-center gap-1.5">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                    Protected
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     PAGE: BOOKING
+═══════════════════════════════════════════ -->
+    <div id="page-booking" class="page">
+        <div class="pt-16 min-h-screen bg-surface">
+            <div class="max-w-5xl mx-auto px-6 py-10">
+                <button onclick="showPage('details')"
+                    class="flex items-center gap-2 text-gray-500 hover:text-gray-900 text-sm mb-8 transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back to listing
+                </button>
+
+                <h1 class="font-display text-3xl font-800 mb-8" style="letter-spacing:-0.02em;">Confirm your booking
+                </h1>
+
+                <!-- Step Indicator -->
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-700 text-white"
+                            style="background:#3b1fd4;">1</div>
+                        <span class="text-sm font-600" style="color:#3b1fd4;">Your Stay</span>
+                    </div>
+                    <div class="flex-1 h-0.5 rounded-full" style="background:#3b1fd4;"></div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-700 text-white"
+                            style="background:#3b1fd4;">2</div>
+                        <span class="text-sm font-600" style="color:#3b1fd4;">Guest Info</span>
+                    </div>
+                    <div class="flex-1 h-0.5 bg-gray-200 rounded-full"></div>
+                    <div class="flex items-center gap-2">
+                        <div
+                            class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-700 bg-gray-200 text-gray-500">
+                            3</div>
+                        <span class="text-sm text-gray-400">Payment</span>
+                    </div>
+                </div>
+
+                <div class="flex gap-10">
+                    <!-- Left: Form -->
+                    <div class="flex-1">
+                        <!-- Stay Summary -->
+                        <div class="bg-white rounded-2xl p-6 shadow-card mb-6">
+                            <h2 class="font-display font-700 text-lg mb-5">Your stay</h2>
+                            <div class="grid grid-cols-3 gap-4 mb-4">
+                                <div class="bg-surface rounded-xl p-4">
+                                    <p class="text-xs text-gray-400 uppercase tracking-wide mb-1"
+                                        style="font-family:'Syne',sans-serif;">Check-in</p>
+                                    <p class="font-display font-700 text-base">Jun 1, 2025</p>
+                                    <p class="text-gray-400 text-xs mt-0.5">After 2:00 PM</p>
+                                </div>
+                                <div class="bg-surface rounded-xl p-4">
+                                    <p class="text-xs text-gray-400 uppercase tracking-wide mb-1"
+                                        style="font-family:'Syne',sans-serif;">Check-out</p>
+                                    <p class="font-display font-700 text-base">Jun 5, 2025</p>
+                                    <p class="text-gray-400 text-xs mt-0.5">Before 12:00 PM</p>
+                                </div>
+                                <div class="bg-surface rounded-xl p-4">
+                                    <p class="text-xs text-gray-400 uppercase tracking-wide mb-1"
+                                        style="font-family:'Syne',sans-serif;">Guests</p>
+                                    <p class="font-display font-700 text-base">2 Guests</p>
+                                    <p class="text-gray-400 text-xs mt-0.5">4 nights</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Guest Info -->
+                        <div class="bg-white rounded-2xl p-6 shadow-card mb-6">
+                            <h2 class="font-display font-700 text-lg mb-5">Guest information</h2>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-600 text-gray-500 uppercase tracking-wide mb-2"
+                                        style="font-family:'Syne',sans-serif;">First Name</label>
+                                    <input type="text" placeholder="Chukwuemeka"
+                                        class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 font-medium transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-600 text-gray-500 uppercase tracking-wide mb-2"
+                                        style="font-family:'Syne',sans-serif;">Last Name</label>
+                                    <input type="text" placeholder="Okonkwo"
+                                        class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 font-medium transition-all">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-600 text-gray-500 uppercase tracking-wide mb-2"
+                                        style="font-family:'Syne',sans-serif;">Email Address</label>
+                                    <input type="email" placeholder="emeka@example.com"
+                                        class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 font-medium transition-all">
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-600 text-gray-500 uppercase tracking-wide mb-2"
+                                        style="font-family:'Syne',sans-serif;">Phone Number</label>
+                                    <div class="flex gap-2">
+                                        <select
+                                            class="border border-gray-200 rounded-xl px-3 py-3 text-sm text-gray-600 bg-white focus:outline-none">
+                                            <option>🇳🇬 +234</option>
+                                            <option>🇬🇧 +44</option>
+                                            <option>🇺🇸 +1</option>
+                                        </select>
+                                        <input type="tel" placeholder="0801 234 5678"
+                                            class="flex-1 border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 font-medium transition-all">
+                                    </div>
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-xs font-600 text-gray-500 uppercase tracking-wide mb-2"
+                                        style="font-family:'Syne',sans-serif;">Special Requests (Optional)</label>
+                                    <textarea placeholder="Early check-in, airport pickup, dietary requirements..."
+                                        class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 font-medium transition-all resize-none h-24"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Policies -->
+                        <div class="bg-white rounded-2xl p-6 shadow-card mb-6">
+                            <h2 class="font-display font-700 text-lg mb-4">Cancellation policy</h2>
+                            <div class="flex items-start gap-3">
+                                <div class="w-2 h-2 rounded-full mt-1.5 flex-shrink-0" style="background:#3b1fd4;">
+                                </div>
+                                <p class="text-sm text-gray-600 leading-relaxed"><strong class="text-gray-900">Free
+                                        cancellation</strong> until 48 hours before check-in. Cancel after that and
+                                    you'll lose 50% of the booking cost.</p>
+                            </div>
+                        </div>
+
+                        <button onclick="showPage('dashboard')"
+                            class="btn-primary w-full text-white font-display font-700 py-4 rounded-xl text-base flex items-center justify-center gap-2">
+                            Continue to Payment
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Right: Price Summary -->
+                    <div class="w-80 flex-shrink-0 hidden lg:block">
+                        <div class="bg-white rounded-2xl shadow-card p-6" style="position: sticky; top: 88px;">
+                            <div class="flex gap-4 mb-5 pb-5 border-b border-gray-100">
+                                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=120&q=80"
+                                    class="w-20 h-20 rounded-xl object-cover flex-shrink-0" alt="">
+                                <div>
+                                    <p class="text-xs text-gray-400 mb-1">Entire apartment</p>
+                                    <p class="font-display font-700 text-sm leading-snug">The Meridian Penthouse</p>
+                                    <p class="text-gray-400 text-xs mt-1 flex items-center gap-1">
+                                        <span class="star text-xs">★</span> 4.97 · 128 reviews
+                                    </p>
+                                </div>
+                            </div>
+
+                            <h3 class="font-display font-700 text-base mb-4">Price details</h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between text-gray-600">
+                                    <span>₦185,000 × 4 nights</span>
+                                    <span>₦740,000</span>
+                                </div>
+                                <div class="flex justify-between text-gray-600">
+                                    <span>Service fee</span>
+                                    <span>₦74,000</span>
+                                </div>
+                                <div class="flex justify-between text-gray-600">
+                                    <span>Cleaning fee</span>
+                                    <span>₦25,000</span>
+                                </div>
+                                <div class="border-t border-gray-100 pt-3 flex justify-between">
+                                    <span class="font-display font-700">Total (NGN)</span>
+                                    <span class="font-display font-800 text-lg" style="color:#130b4e;">₦839,000</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-5 pt-5 border-t border-gray-100">
+                                <div class="flex items-center gap-2 text-xs text-gray-400">
+                                    <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Free cancellation until May 30, 2025
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     PAGE: DASHBOARD
+═══════════════════════════════════════════ -->
+    <div id="page-dashboard" class="page">
+        <div class="pt-16 min-h-screen bg-surface flex">
+            <!-- Sidebar -->
+            <div class="w-64 flex-shrink-0 bg-white border-r border-gray-100 h-screen sticky top-16 overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-8">
+                        <img src="https://i.pravatar.cc/44?img=30" class="w-11 h-11 rounded-full object-cover" alt="">
+                        <div>
+                            <p class="font-display font-700 text-sm">Chukwuemeka O.</p>
+                            <p class="text-gray-400 text-xs">Premium Member</p>
+                        </div>
+                    </div>
+
+                    <nav class="space-y-1">
+                        <a
+                            class="sidebar-link active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer">
+                            <svg class="w-4.5 h-4.5 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            Overview
+                        </a>
+                        <a
+                            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            My Bookings
+                        </a>
+                        <a
+                            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                            Saved
+                        </a>
+                        <a
+                            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            Notifications
+                            <span
+                                class="ml-auto bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-700">3</span>
+                        </a>
+                        <a
+                            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            Profile
+                        </a>
+                        <div class="border-t border-gray-100 my-3"></div>
+                        <a
+                            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-gray-600">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Settings
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="flex-1 p-8 overflow-y-auto">
+                <div class="max-w-4xl">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h1 class="font-display text-2xl font-800">Welcome back, Chukwuemeka 👋</h1>
+                            <p class="text-gray-400 text-sm mt-1">Here's what's happening with your stays</p>
+                        </div>
+                        <button onclick="showPage('listings')"
+                            class="btn-primary text-white font-display font-600 px-5 py-2.5 rounded-xl text-sm flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            Book New Stay
+                        </button>
+                    </div>
+
+                    <!-- Stats Row -->
+                    <div class="grid grid-cols-3 gap-5 mb-8">
+                        <div class="bg-white rounded-2xl p-5 shadow-card">
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-2"
+                                style="font-family:'Syne',sans-serif;">Total Bookings</p>
+                            <p class="font-display font-800 text-3xl" style="color:#2f18b0;">12</p>
+                            <p class="text-green-500 text-xs mt-1 font-medium">↑ 2 this month</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-5 shadow-card">
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-2"
+                                style="font-family:'Syne',sans-serif;">Total Spent</p>
+                            <p class="font-display font-800 text-3xl" style="color:#2f18b0;">₦4.2M</p>
+                            <p class="text-gray-400 text-xs mt-1">Across 12 stays</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-5 shadow-card">
+                            <p class="text-xs text-gray-400 uppercase tracking-wide mb-2"
+                                style="font-family:'Syne',sans-serif;">Nights Stayed</p>
+                            <p class="font-display font-800 text-3xl" style="color:#2f18b0;">37</p>
+                            <p class="text-gray-400 text-xs mt-1">In 6 cities</p>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Stay -->
+                    <div class="mb-8">
+                        <h2 class="font-display font-700 text-lg mb-4">Upcoming Stay</h2>
+                        <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+                            <div class="flex">
+                                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=300&q=80"
+                                    class="w-52 object-cover flex-shrink-0" alt="">
+                                <div class="p-6 flex-1">
+                                    <div class="flex items-start justify-between mb-3">
+                                        <div>
+                                            <span class="badge-confirmed text-xs font-700 px-2.5 py-1 rounded-full"
+                                                style="font-family:'Syne',sans-serif;">✓ CONFIRMED</span>
+                                            <h3 class="font-display font-700 text-base mt-2">The Meridian Penthouse</h3>
+                                            <p class="text-gray-400 text-sm">Victoria Island, Lagos</p>
+                                        </div>
+                                        <p class="font-display font-800 text-xl" style="color:#130b4e;">₦839,000</p>
+                                    </div>
+                                    <div class="flex gap-6 text-sm mt-4">
+                                        <div>
+                                            <p class="text-gray-400 text-xs uppercase tracking-wide mb-0.5"
+                                                style="font-family:'Syne',sans-serif;">Check-in</p>
+                                            <p class="font-600 text-gray-800">Jun 1, 2025</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-400 text-xs uppercase tracking-wide mb-0.5"
+                                                style="font-family:'Syne',sans-serif;">Check-out</p>
+                                            <p class="font-600 text-gray-800">Jun 5, 2025</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-400 text-xs uppercase tracking-wide mb-0.5"
+                                                style="font-family:'Syne',sans-serif;">Guests</p>
+                                            <p class="font-600 text-gray-800">2 Guests</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex gap-3 mt-5">
+                                        <button class="btn-secondary text-sm px-4 py-2 rounded-xl">View Details</button>
+                                        <button
+                                            class="text-red-400 hover:text-red-600 text-sm px-4 py-2 rounded-xl border border-red-100 hover:border-red-200 transition-colors">Cancel
+                                            Booking</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Booking History -->
+                    <div>
+                        <h2 class="font-display font-700 text-lg mb-4">Booking History</h2>
+                        <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+                            <div class="divide-y divide-gray-50">
+                                <!-- Row 1 -->
+                                <div class="flex items-center px-6 py-4 hover:bg-gray-50 transition-colors">
+                                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=80&q=80"
+                                        class="w-12 h-12 rounded-xl object-cover flex-shrink-0 mr-4" alt="">
+                                    <div class="flex-1">
+                                        <p class="font-display font-700 text-sm">Ikeja City Loft</p>
+                                        <p class="text-gray-400 text-xs">Ikoyi, Lagos · Apr 12–15, 2025</p>
+                                    </div>
+                                    <div class="text-right mr-6">
+                                        <p class="font-600 text-sm text-gray-800">₦225,000</p>
+                                        <p class="text-gray-400 text-xs">3 nights</p>
+                                    </div>
+                                    <span
+                                        class="badge-confirmed text-xs font-700 px-3 py-1 rounded-full">Completed</span>
+                                </div>
+
+                                <!-- Row 2 -->
+                                <div class="flex items-center px-6 py-4 hover:bg-gray-50 transition-colors">
+                                    <img src="https://images.unsplash.com/photo-1556020685-ae41abfc9365?w=80&q=80"
+                                        class="w-12 h-12 rounded-xl object-cover flex-shrink-0 mr-4" alt="">
+                                    <div class="flex-1">
+                                        <p class="font-display font-700 text-sm">Maitama Executive Flat</p>
+                                        <p class="text-gray-400 text-xs">Maitama, Abuja · Mar 5–9, 2025</p>
+                                    </div>
+                                    <div class="text-right mr-6">
+                                        <p class="font-600 text-sm text-gray-800">₦480,000</p>
+                                        <p class="text-gray-400 text-xs">4 nights</p>
+                                    </div>
+                                    <span
+                                        class="badge-confirmed text-xs font-700 px-3 py-1 rounded-full">Completed</span>
+                                </div>
+
+                                <!-- Row 3 -->
+                                <div class="flex items-center px-6 py-4 hover:bg-gray-50 transition-colors">
+                                    <img src="https://images.unsplash.com/photo-1501183638710-841dd1904471?w=80&q=80"
+                                        class="w-12 h-12 rounded-xl object-cover flex-shrink-0 mr-4" alt="">
+                                    <div class="flex-1">
+                                        <p class="font-display font-700 text-sm">GRA Heritage Apartment</p>
+                                        <p class="text-gray-400 text-xs">Port Harcourt · Feb 18–22, 2025</p>
+                                    </div>
+                                    <div class="text-right mr-6">
+                                        <p class="font-600 text-sm text-gray-800">₦272,000</p>
+                                        <p class="text-gray-400 text-xs">4 nights</p>
+                                    </div>
+                                    <span class="badge-pending text-xs font-700 px-3 py-1 rounded-full">Pending
+                                        Review</span>
+                                </div>
+
+                                <!-- Row 4 -->
+                                <div class="flex items-center px-6 py-4 hover:bg-gray-50 transition-colors">
+                                    <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=80&q=80"
+                                        class="w-12 h-12 rounded-xl object-cover flex-shrink-0 mr-4" alt="">
+                                    <div class="flex-1">
+                                        <p class="font-display font-700 text-sm">Lekki Oceanview Suite</p>
+                                        <p class="text-gray-400 text-xs">Lekki Phase 1 · Jan 24–26, 2025</p>
+                                    </div>
+                                    <div class="text-right mr-6">
+                                        <p class="font-600 text-sm text-gray-800">₦190,000</p>
+                                        <p class="text-gray-400 text-xs">2 nights</p>
+                                    </div>
+                                    <span
+                                        class="badge-cancelled text-xs font-700 px-3 py-1 rounded-full">Cancelled</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     PAGE: ADMIN DASHBOARD
+═══════════════════════════════════════════ -->
+    <div id="page-admin" class="page">
+        <div class="pt-16 min-h-screen flex" style="background:#0f0a2e;">
+            <!-- Admin Sidebar -->
+            <div class="w-64 flex-shrink-0 h-screen sticky top-16 overflow-y-auto"
+                style="background:#1a1245; border-right: 1px solid rgba(255,255,255,0.06);">
+                <div class="p-6">
+                    <div class="mb-8">
+                        <p class="text-white/40 text-xs uppercase tracking-widest mb-1"
+                            style="font-family:'Syne',sans-serif;">Admin Panel</p>
+                        <p class="font-display font-700 text-white text-sm">Access Rest HQ</p>
+                    </div>
+
+                    <nav class="space-y-1">
+                        <a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-white"
+                            style="background:rgba(91,82,248,0.3);">
+                            <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                style="color:#817eff;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            Dashboard
+                        </a>
+                        <a
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-white/50 hover:text-white hover:bg-white/5 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                            Properties
+                        </a>
+                        <a
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-white/50 hover:text-white hover:bg-white/5 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Bookings
+                            <span
+                                class="ml-auto text-xs font-700 bg-yellow-400 text-yellow-900 px-1.5 py-0.5 rounded-md">12</span>
+                        </a>
+                        <a
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-white/50 hover:text-white hover:bg-white/5 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Users
+                        </a>
+                        <a
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-white/50 hover:text-white hover:bg-white/5 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            Analytics
+                        </a>
+                        <a
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm cursor-pointer text-white/50 hover:text-white hover:bg-white/5 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                            </svg>
+                            Payments
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Admin Main -->
+            <div class="flex-1 overflow-y-auto p-8">
+                <div class="max-w-5xl">
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h1 class="font-display text-2xl font-800 text-white">Admin Dashboard</h1>
+                            <p class="text-white/40 text-sm mt-1">Last updated: May 14, 2025 · 09:45 AM</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button
+                                class="btn-secondary text-white border-white/20 bg-white/5 text-sm px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">Export
+                                Report</button>
+                            <button class="btn-gold text-white font-display font-600 text-sm px-5 py-2.5 rounded-xl">+
+                                Add Property</button>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div class="rounded-2xl p-5"
+                            style="background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="text-white/40 text-xs uppercase tracking-wide"
+                                    style="font-family:'Syne',sans-serif;">Revenue (May)</p>
+                                <span class="text-green-400 text-xs font-600">↑ 24%</span>
+                            </div>
+                            <p class="font-display font-800 text-2xl text-white">₦48.3M</p>
+                        </div>
+                        <div class="rounded-2xl p-5"
+                            style="background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="text-white/40 text-xs uppercase tracking-wide"
+                                    style="font-family:'Syne',sans-serif;">Bookings</p>
+                                <span class="text-green-400 text-xs font-600">↑ 18%</span>
+                            </div>
+                            <p class="font-display font-800 text-2xl text-white">312</p>
+                        </div>
+                        <div class="rounded-2xl p-5"
+                            style="background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="text-white/40 text-xs uppercase tracking-wide"
+                                    style="font-family:'Syne',sans-serif;">Occupancy</p>
+                                <span class="text-yellow-400 text-xs font-600">→ Stable</span>
+                            </div>
+                            <p class="font-display font-800 text-2xl text-white">76%</p>
+                        </div>
+                        <div class="rounded-2xl p-5"
+                            style="background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="text-white/40 text-xs uppercase tracking-wide"
+                                    style="font-family:'Syne',sans-serif;">Active Users</p>
+                                <span class="text-green-400 text-xs font-600">↑ 31%</span>
+                            </div>
+                            <p class="font-display font-800 text-2xl text-white">1,847</p>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Chart (Visual) -->
+                    <div class="rounded-2xl p-6 mb-8"
+                        style="background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="font-display font-700 text-white">Revenue Overview</h2>
+                            <div class="flex gap-2">
+                                <button class="text-xs px-3 py-1.5 rounded-lg text-white font-600"
+                                    style="background:#3b1fd4;">Monthly</button>
+                                <button
+                                    class="text-xs px-3 py-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/10 transition-colors">Weekly</button>
+                            </div>
+                        </div>
+                        <!-- Simple bar chart -->
+                        <div class="flex items-end gap-3 h-36">
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full rounded-t-lg" style="height:45%; background:rgba(91,82,248,0.4);">
+                                </div>
+                                <span class="text-white/30 text-xs">Jan</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full rounded-t-lg" style="height:60%; background:rgba(91,82,248,0.4);">
+                                </div>
+                                <span class="text-white/30 text-xs">Feb</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full rounded-t-lg" style="height:50%; background:rgba(91,82,248,0.4);">
+                                </div>
+                                <span class="text-white/30 text-xs">Mar</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full rounded-t-lg" style="height:75%; background:rgba(91,82,248,0.4);">
+                                </div>
+                                <span class="text-white/30 text-xs">Apr</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 flex-1">
+                                <div class="w-full rounded-t-lg"
+                                    style="height:95%; background:linear-gradient(180deg,#5b52f8,#3b1fd4);"></div>
+                                <span class="text-white/60 text-xs font-600">May</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bookings Table -->
+                    <div class="rounded-2xl overflow-hidden mb-8"
+                        style="background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                        <div class="flex items-center justify-between p-6 border-b"
+                            style="border-color:rgba(255,255,255,0.06);">
+                            <h2 class="font-display font-700 text-white">Recent Bookings</h2>
+                            <div class="flex items-center gap-3">
+                                <input type="text" placeholder="Search bookings..."
+                                    class="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-white text-sm placeholder-white/25 focus:outline-none focus:border-brand-500 w-52">
+                                <select
+                                    class="bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-white/60 text-sm focus:outline-none">
+                                    <option>All Status</option>
+                                    <option>Confirmed</option>
+                                    <option>Pending</option>
+                                    <option>Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <table class="w-full data-table">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                                    <th class="text-left px-6 py-3 text-white/30 text-xs uppercase tracking-wide font-600"
+                                        style="font-family:'Syne',sans-serif;">Guest</th>
+                                    <th class="text-left px-6 py-3 text-white/30 text-xs uppercase tracking-wide font-600"
+                                        style="font-family:'Syne',sans-serif;">Property</th>
+                                    <th class="text-left px-6 py-3 text-white/30 text-xs uppercase tracking-wide font-600"
+                                        style="font-family:'Syne',sans-serif;">Dates</th>
+                                    <th class="text-left px-6 py-3 text-white/30 text-xs uppercase tracking-wide font-600"
+                                        style="font-family:'Syne',sans-serif;">Amount</th>
+                                    <th class="text-left px-6 py-3 text-white/30 text-xs uppercase tracking-wide font-600"
+                                        style="font-family:'Syne',sans-serif;">Status</th>
+                                    <th class="text-left px-6 py-3 text-white/30 text-xs uppercase tracking-wide font-600"
+                                        style="font-family:'Syne',sans-serif;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <img src="https://i.pravatar.cc/32?img=30"
+                                                class="w-8 h-8 rounded-full object-cover" alt="">
+                                            <div>
+                                                <p class="text-white text-sm font-600">Chukwuemeka O.</p>
+                                                <p class="text-white/30 text-xs">+234 801 234 5678</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-white/70 text-sm">Meridian Penthouse</td>
+                                    <td class="px-6 py-4 text-white/50 text-xs">Jun 1–5, 2025</td>
+                                    <td class="px-6 py-4 text-white font-700 text-sm">₦839,000</td>
+                                    <td class="px-6 py-4"><span
+                                            class="badge-confirmed text-xs font-700 px-2.5 py-1 rounded-full">Confirmed</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex gap-2">
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-white/60 hover:text-white border border-white/10 hover:border-white/30 transition-colors">Edit</button>
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-red-400/70 hover:text-red-400 border border-red-400/10 hover:border-red-400/30 transition-colors">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <img src="https://i.pravatar.cc/32?img=5"
+                                                class="w-8 h-8 rounded-full object-cover" alt="">
+                                            <div>
+                                                <p class="text-white text-sm font-600">Chidinma Okafor</p>
+                                                <p class="text-white/30 text-xs">+234 802 345 6789</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-white/70 text-sm">Asokoro Villa Estate</td>
+                                    <td class="px-6 py-4 text-white/50 text-xs">May 18–23, 2025</td>
+                                    <td class="px-6 py-4 text-white font-700 text-sm">₦1,250,000</td>
+                                    <td class="px-6 py-4"><span
+                                            class="badge-pending text-xs font-700 px-2.5 py-1 rounded-full">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex gap-2">
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-white/60 hover:text-white border border-white/10 hover:border-white/30 transition-colors">Edit</button>
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-red-400/70 hover:text-red-400 border border-red-400/10 hover:border-red-400/30 transition-colors">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <img src="https://i.pravatar.cc/32?img=7"
+                                                class="w-8 h-8 rounded-full object-cover" alt="">
+                                            <div>
+                                                <p class="text-white text-sm font-600">Emeka Adeyemi</p>
+                                                <p class="text-white/30 text-xs">+234 803 456 7890</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-white/70 text-sm">Maitama Executive Flat</td>
+                                    <td class="px-6 py-4 text-white/50 text-xs">May 20–24, 2025</td>
+                                    <td class="px-6 py-4 text-white font-700 text-sm">₦480,000</td>
+                                    <td class="px-6 py-4"><span
+                                            class="badge-confirmed text-xs font-700 px-2.5 py-1 rounded-full">Confirmed</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex gap-2">
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-white/60 hover:text-white border border-white/10 hover:border-white/30 transition-colors">Edit</button>
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-red-400/70 hover:text-red-400 border border-red-400/10 hover:border-red-400/30 transition-colors">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.04);">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <img src="https://i.pravatar.cc/32?img=9"
+                                                class="w-8 h-8 rounded-full object-cover" alt="">
+                                            <div>
+                                                <p class="text-white text-sm font-600">Amara Nwosu</p>
+                                                <p class="text-white/30 text-xs">+234 804 567 8901</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-white/70 text-sm">GRA Heritage Apartment</td>
+                                    <td class="px-6 py-4 text-white/50 text-xs">Apr 10–15, 2025</td>
+                                    <td class="px-6 py-4 text-white font-700 text-sm">₦340,000</td>
+                                    <td class="px-6 py-4"><span
+                                            class="badge-cancelled text-xs font-700 px-2.5 py-1 rounded-full">Cancelled</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex gap-2">
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-white/60 hover:text-white border border-white/10 hover:border-white/30 transition-colors">Edit</button>
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-red-400/70 hover:text-red-400 border border-red-400/10 hover:border-red-400/30 transition-colors">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <img src="https://i.pravatar.cc/32?img=22"
+                                                class="w-8 h-8 rounded-full object-cover" alt="">
+                                            <div>
+                                                <p class="text-white text-sm font-600">Ngozi Okonkwo</p>
+                                                <p class="text-white/30 text-xs">+234 805 678 9012</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-white/70 text-sm">Lekki Oceanview Suite</td>
+                                    <td class="px-6 py-4 text-white/50 text-xs">Jun 8–10, 2025</td>
+                                    <td class="px-6 py-4 text-white font-700 text-sm">₦190,000</td>
+                                    <td class="px-6 py-4"><span
+                                            class="badge-pending text-xs font-700 px-2.5 py-1 rounded-full">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex gap-2">
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-white/60 hover:text-white border border-white/10 hover:border-white/30 transition-colors">Edit</button>
+                                            <button
+                                                class="text-xs px-2.5 py-1.5 rounded-lg text-red-400/70 hover:text-red-400 border border-red-400/10 hover:border-red-400/30 transition-colors">Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="p-4 flex items-center justify-between"
+                            style="border-top: 1px solid rgba(255,255,255,0.06);">
+                            <p class="text-white/30 text-xs">Showing 5 of 312 bookings</p>
+                            <div class="flex gap-2">
+                                <button
+                                    class="text-xs px-3 py-1.5 rounded-lg text-white/40 border border-white/10 hover:text-white hover:border-white/30 transition-colors">Previous</button>
+                                <button class="text-xs px-3 py-1.5 rounded-lg text-white font-700 border"
+                                    style="background:#3b1fd4; border-color:#3b1fd4;">Next</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Properties Table -->
+                    <div class="rounded-2xl overflow-hidden"
+                        style="background:rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);">
+                        <div class="flex items-center justify-between p-6 border-b"
+                            style="border-color:rgba(255,255,255,0.06);">
+                            <h2 class="font-display font-700 text-white">Properties</h2>
+                            <button class="text-xs px-4 py-2 rounded-xl text-white font-600"
+                                style="background:rgba(91,82,248,0.3); border:1px solid rgba(91,82,248,0.5);">Manage
+                                All</button>
+                        </div>
+                        <div class="divide-y" style="divide-color:rgba(255,255,255,0.04);">
+                            <div class="flex items-center px-6 py-4 gap-4">
+                                <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=60&q=80"
+                                    class="w-12 h-12 rounded-xl object-cover" alt="">
+                                <div class="flex-1">
+                                    <p class="text-white text-sm font-600">The Meridian Penthouse</p>
+                                    <p class="text-white/30 text-xs">Victoria Island, Lagos · 3 Bed</p>
+                                </div>
+                                <div class="text-right mr-4">
+                                    <p class="text-white text-sm font-700">₦185,000/night</p>
+                                    <p class="text-green-400 text-xs">✓ Active · 94% booked</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button
+                                        class="text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-white/30 transition-colors">Edit</button>
+                                    <button
+                                        class="text-xs px-3 py-1.5 rounded-lg text-red-400/60 border border-red-400/10 hover:text-red-400 hover:border-red-400/30 transition-colors">Pause</button>
+                                </div>
+                            </div>
+                            <div class="flex items-center px-6 py-4 gap-4">
+                                <img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=60&q=80"
+                                    class="w-12 h-12 rounded-xl object-cover" alt="">
+                                <div class="flex-1">
+                                    <p class="text-white text-sm font-600">Asokoro Villa Estate</p>
+                                    <p class="text-white/30 text-xs">Asokoro, Abuja · 5 Bed</p>
+                                </div>
+                                <div class="text-right mr-4">
+                                    <p class="text-white text-sm font-700">₦250,000/night</p>
+                                    <p class="text-green-400 text-xs">✓ Active · 78% booked</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button
+                                        class="text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-white/30 transition-colors">Edit</button>
+                                    <button
+                                        class="text-xs px-3 py-1.5 rounded-lg text-red-400/60 border border-red-400/10 hover:text-red-400 hover:border-red-400/30 transition-colors">Pause</button>
+                                </div>
+                            </div>
+                            <div class="flex items-center px-6 py-4 gap-4">
+                                <img src="https://images.unsplash.com/photo-1501183638710-841dd1904471?w=60&q=80"
+                                    class="w-12 h-12 rounded-xl object-cover" alt="">
+                                <div class="flex-1">
+                                    <p class="text-white text-sm font-600">GRA Heritage Apartment</p>
+                                    <p class="text-white/30 text-xs">Port Harcourt · 2 Bed</p>
+                                </div>
+                                <div class="text-right mr-4">
+                                    <p class="text-white text-sm font-700">₦68,000/night</p>
+                                    <p class="text-yellow-400 text-xs">⏸ Paused · Maintenance</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button
+                                        class="text-xs px-3 py-1.5 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-white/30 transition-colors">Edit</button>
+                                    <button
+                                        class="text-xs px-3 py-1.5 rounded-lg text-green-400/60 border border-green-400/10 hover:text-green-400 hover:border-green-400/30 transition-colors">Activate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+    <script>
+        // Page navigation system
+        function showPage(page) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+            // Show target page
+            const target = document.getElementById('page-' + page);
+            if (target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // Update navbar style
+            updateNavbar(page);
+        }
+
+        function updateNavbar(page) {
+            const navbar = document.getElementById('navbar');
+            const isLight = ['listings', 'details', 'booking', 'dashboard'].includes(page);
+            const isDark = page === 'admin';
+
+            navbar.classList.remove('dark');
+
+            if (isLight) {
+                navbar.style.background = 'rgba(255,255,255,0.97)';
+                navbar.style.backdropFilter = 'blur(12px)';
+                navbar.style.boxShadow = '0 1px 0 rgba(0,0,0,0.08)';
+                navbar.querySelectorAll('.nav-logo, .nav-link').forEach(el => {
+                    el.style.color = el.classList.contains('nav-logo') ? '#1e1278' : '#374151';
+                });
+                navbar.querySelector('.nav-cta').style.background = '#3b1fd4';
+            } else if (isDark) {
+                navbar.style.background = 'rgba(10,7,36,0.95)';
+                navbar.style.backdropFilter = 'blur(12px)';
+                navbar.style.boxShadow = '0 1px 0 rgba(255,255,255,0.05)';
+                navbar.querySelectorAll('.nav-logo').forEach(el => el.style.color = 'white');
+                navbar.querySelectorAll('.nav-link').forEach(el => el.style.color = 'rgba(255,255,255,0.7)');
+            } else {
+                // Home - transparent
+                navbar.style.background = 'transparent';
+                navbar.style.backdropFilter = 'none';
+                navbar.style.boxShadow = 'none';
+                navbar.querySelectorAll('.nav-logo, .nav-link').forEach(el => el.style.color = '');
+                navbar.querySelector('.nav-cta').style.background = '';
+            }
+        }
+
+        // Navbar scroll behavior (home page only)
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            const activePage = document.querySelector('.page.active');
+
+            if (activePage && activePage.id === 'page-home') {
+                if (window.scrollY > 80) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }
+        });
+
+        // Scroll reveal animations
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // Price filter display
+        function updatePriceFilter(val) {
+            const formatted = new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(val);
+            // Update display (could add a label here)
+        }
+
+        // Filter button active state
+        function setActiveFilter(btn) {
+            const group = btn.closest('.flex');
+            group.querySelectorAll('.filter-btn').forEach(b => {
+                b.style.background = '';
+                b.style.color = '';
+                b.style.borderColor = '';
+            });
+            btn.style.background = '#f0f1ff';
+            btn.style.color = '#2f18b0';
+            btn.style.borderColor = '#3b1fd4';
+        }
+
+        // Staggered reveal for cards
+        function triggerCardAnimations() {
+            const cards = document.querySelectorAll('.apt-card');
+            cards.forEach((card, i) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, i * 60);
+            });
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            triggerCardAnimations();
+            updateNavbar('home');
+
+            // Observe new cards when pages change
+            const observer = new MutationObserver(() => {
+                document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+        });
+    </script>
+</body>
+
+</html>
